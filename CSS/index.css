@@ -20,9 +20,16 @@ body{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
+    box-shadow: 5px 10px 10px #000;
+    color: #fff;
 }
-
+.form-control{
+    color: #fff;
+    background-color: #222;
+    border-radius: 0px;
+    border: 0px;
+    border-bottom: 2px solid #fff;
+}
 .form-headings{
     color: #fff;
 }
