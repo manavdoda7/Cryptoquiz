@@ -9,7 +9,9 @@ const sgTransport = require('nodemailer-sendgrid-transport');
 const bcrypt = require('bcrypt')
 const flash = require('connect-flash')
               require('dotenv').config()
+const csrf = require('csurf')
 
+const csrfProtection = csrf({cookie:true});
 const app = express();
 
 //Models
@@ -28,6 +30,7 @@ app.use(session({
     saveUninitialized: false
 }))
 app.use(flash());
+app.use(csrfProtection);
 
 var mailer = nodemailer.createTransport(sgTransport({
     auth:{
@@ -39,24 +42,58 @@ mongoose.connect(MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //Get requests
 app.get("/",(req,res)=>{
-    res.render('index')
+    res.render('index',{
+        isAuthenticated: req.session.isLoggedIn, 
+        name: req.session.player, 
+        csrfToken: req.csrfToken()
+    })
 })
 
 app.get("/login",(req,res)=>{
     res.render("login",{
         reg:req.flash('error'),
-        success:req.flash('success')
+        success:req.flash('success'),
+        csrfToken: req.csrfToken()
     })
 })
 
 app.get("/register",(req,res)=>{
-    res.render("register")
+    res.render("register",{csrfToken: req.csrfToken()})
 })
 
 //Post requests
 
 app.post('/login', (req,res)=>{
-    res.send("Working fine");
+   Player.findOne({email: req.body.email})
+   .then((User)=>{
+        if(User){
+            if(User.verified){
+                bcrypt.compare(req.body.password, User.password)
+                .then((result)=>{
+                    if(!result){
+                        req.flash('error', 'Incorrect password')
+                        res.redirect('/login')
+                    }else{
+                        req.session.isLoggedIn = true;
+                        req.session.player = User;
+                        res.redirect('/');
+                    }
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+            }else{
+                req.flash('error', 'Email not verified')
+                res.redirect('/login')
+            }
+        }else{
+            req.flash('error', 'No user with such email exists')
+            res.redirect('/login')
+        }
+   })
+   .catch((err)=>{
+       console.log(err)
+   })
 })
 
 app.post('/register', (req,res)=>{
@@ -114,24 +151,37 @@ app.post('/register', (req,res)=>{
     }
 })
 
+app.post("/logout",(req,res)=>{
+    req.session.destroy((err)=>{
+        if(!err){
+            res.redirect('/');
+        }
+    })
+})
+
 //Email verification:
 app.get('/verify/:token',(req,res)=>{
     let token = req.params.token;
     Player.findOne({token:token})
     .then((User)=>{
-        User.verified = true;
-        User.save()
-        .then(()=>{
-            res.send('Your account has been verified')
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
+        if(User){
+            User.verified = true;
+            User.save()
+            .then(()=>{
+                res.send('Your account has been verified')
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        }else{
+            res.send("No account with this mail to be verified")
+        }
     })
     .catch(err=>{
         console.log(err);
     })
 })
+
 
 app.listen('3000',()=>{
     console.log("App listening at 3000")

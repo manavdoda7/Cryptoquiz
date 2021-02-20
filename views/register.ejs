@@ -45,6 +45,7 @@
             <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
             <label class="form-check-label form-headings" for="exampleCheck1">I know the rules & agree to T&C's</label>
           </div>
+          <input type="text" hidden name="_csrf" value="<%=csrfToken%>">
           <button type="submit" class="btn btn-primary">Register</button>
           <a href="/login" class="btn btn-success">Login</a>
           <div><a href="/" class="return">Return to HomePage</a></div>
