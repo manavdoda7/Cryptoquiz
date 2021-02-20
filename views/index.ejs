@@ -22,10 +22,19 @@
 <body>
   <div class="navigation-bar">
     <nav class="navbar navbar-light justify-content-between">
-      <a class="navbar-brand">Hello Guest,</a>
-      <form class="form-inline">
-        <a href="/login" class="btn btn-primary">Login</a>
-        <a href="/register" class="btn btn-success">Register</a>
+      <% if(isAuthenticated){ %>
+        <a class="navbar-brand">Hello <%=name.playerName%>,</a>
+        <% }else{ %>
+          <a class="navbar-brand">Hello Guest,</a>
+        <% } %>
+      <form class="form-inline" method="POST" action="/logout">
+        <% if(!isAuthenticated) { %>
+          <a href="/login" class="btn btn-primary">Login</a>
+          <a href="/register" class="btn btn-success">Register</a>
+        <% }else{ %>
+          <input type="text" hidden name="_csrf" value="<%=csrfToken%>">
+          <button type="submit" class="btn btn-primary">Logout</a>
+        <% } %>  
       </form>
     </nav>
   </div>
