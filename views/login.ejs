@@ -26,7 +26,21 @@
       <div class="col-md-4 col-sm-4 col-xs-12 form">
         <!-- Form -->
     <h1 class="main-heading">Login</h1>
-        <form>
+        <form action="/login" method="POST">
+            <% if(reg.length>0){ %>
+              <div class="mb-3">
+                <p style="color:red">
+                  <%=reg%>
+                </p>
+              </div>
+            <% } %>  
+            <% if(success.length>0){ %>
+              <div class="mb-3">
+                <p style="color:red">
+                  <%=success%>
+                </p>
+              </div>
+            <% } %>  
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label form-headings">Email address</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email">
@@ -41,8 +55,8 @@
             <label class="form-check-label form-headings" for="exampleCheck1">I know the rules & agree to T&C's</label>
           </div>
           <button type="submit" class="btn btn-primary">Login</button>
-          <a href="register.html" class="btn btn-success">Register</a>
-          <div><a href="index.html" class="return">Return to HomePage</a></div>
+          <a href="/register" class="btn btn-success">Register</a>
+          <div><a href="/" class="return">Return to HomePage</a></div>
         </form>
       </div>
     </div>
