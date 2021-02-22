@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt')
 const flash = require('connect-flash')
               require('dotenv').config()
 const csrf = require('csurf')
+const mongoStore = require('connect-mongodb-session')(session)
 
 const csrfProtection = csrf({cookie:true});
 const app = express();
@@ -19,6 +20,11 @@ const Player = require("./models/Player")(mongoose);
 
 const MONGO_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_USER_PASSWORD}@cluster0.ezyqv.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`
 
+const store = new mongoStore({
+    uri: MONGO_URI,
+    collection: process.env.SESSION_STORE
+})
+
 app.set('view engine','ejs');
 
 app.use(express.static("public"));
@@ -27,7 +33,8 @@ app.use(cookieParser());
 app.use(session({
     secret:process.env.SESSION,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store:store
 }))
 app.use(flash());
 app.use(csrfProtection);
