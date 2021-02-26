@@ -37,16 +37,16 @@ body{
     
 }
 .form-headings{
-    color: #000;
+    color: #333;
 }
 .return{
-    color: #fff;
+    color: #333;
     display: block;
     margin-top: 8px;
     text-decoration: none;
 }
 .return:hover{
-    color: #fff;
+    color: #333;
     text-decoration: underline;
 }
 
