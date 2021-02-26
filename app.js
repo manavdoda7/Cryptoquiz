@@ -69,6 +69,10 @@ app.get("/register",(req,res)=>{
     res.render("register",{csrfToken: req.csrfToken()})
 })
 
+app.get('/quiz', (req,res)=>{
+    res.render('quiz');
+})
+
 //Post requests
 
 app.post('/login', (req,res)=>{
