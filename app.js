@@ -12,17 +12,18 @@ const flash = require('connect-flash')
 const csrf = require('csurf')
 const mongoStore = require('connect-mongodb-session')(session)
 
+
 const csrfProtection = csrf({cookie:true});
 const app = express();
 
 //Models
 const Player = require("./models/Player")(mongoose);
 
-const MONGO_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_USER_PASSWORD}@cluster0.ezyqv.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`
+const MONGO_URI = `mongodb+srv://crypto_user:ie5Gp0tr9m5OnKw9@cluster0.ezyqv.mongodb.net/cryptoDB?retryWrites=true&w=majority`
 
 const store = new mongoStore({
     uri: MONGO_URI,
-    collection: process.env.SESSION_STORE
+    collection: 'mySessions'
 })
 
 app.set('view engine','ejs');
@@ -31,7 +32,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({
-    secret:process.env.SESSION,
+    secret:'MySecret',
     resave: false,
     saveUninitialized: false,
     store:store
@@ -41,7 +42,7 @@ app.use(csrfProtection);
 
 var mailer = nodemailer.createTransport(sgTransport({
     auth:{
-        api_key:process.env.SENDGRID_KEY
+        api_key:'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'
     }
 }));
 
