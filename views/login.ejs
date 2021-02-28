@@ -41,6 +41,13 @@
                 </p>
               </div>
             <% } %>  
+            <% if(loginFirst.length>0){ %>
+              <div class="mb-3">
+                <p style="color:red">
+                  <%=loginFirst%>
+                </p>
+              </div>
+            <% } %>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label form-headings">Email address</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" required>
