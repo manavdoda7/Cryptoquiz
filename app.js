@@ -11,6 +11,7 @@ const flash = require('connect-flash')
               require('dotenv').config()
 const csrf = require('csurf')
 const mongoStore = require('connect-mongodb-session')(session)
+const socketio = require('socket.io')
 
 const csrfProtection = csrf({cookie:true});
 
@@ -61,12 +62,23 @@ app.get("/login",(req,res)=>{
     res.render("login",{
         reg:req.flash('error'),
         success:req.flash('success'),
+        loginFirst: req.flash('error3'),
         csrfToken: req.csrfToken()
     })
 })
 
 app.get("/register",(req,res)=>{
     res.render("register",{csrfToken: req.csrfToken()})
+})
+
+app.get("/quiz",(req,res)=>{
+    if(req.session.isLoggedIn){
+        res.render("quiz",{name:req.session.player.playerName});
+    }
+    else{
+        req.flash('error3','Please login first');
+        res.redirect('/login');
+    }
 })
 
 //Post   requests
@@ -84,7 +96,7 @@ app.post('/login', (req,res)=>{
                     }else{
                         req.session.isLoggedIn = true;
                         req.session.player = User;
-                        res.redirect('/');
+                        res.redirect('/quiz');
                     }
                 })
                 .catch((err)=>{
@@ -191,6 +203,28 @@ app.get('/verify/:token',(req,res)=>{
 })
 
 
-app.listen('3000',()=>{
+const server = app.listen('3000',()=>{
     console.log("App listening at 3000")
+})
+
+//Socket io logic
+const io = socketio(server);
+const Question = require('./models/Question')(mongoose)
+io.on('connect',socket=>{
+    console.log("Connection made");
+    numbers = [0,1,2,3]; //Currently hardcoded
+    Question.find({quesNo:{$in:numbers}})
+    .then((data)=>{
+        const myObj = {
+            ques1:data[0].ques,
+            ques2:data[1].ques,
+            ques3:data[2].ques,
+            ques4:data[3].ques,
+        }
+        io.emit('question',myObj);
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+    // io.emit('question',)
 })

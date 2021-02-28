@@ -22,7 +22,7 @@
 <body>
     <div class="navigation-bar">
         <nav class="navbar navbar-light justify-content-between">
-            <a class="navbar-brand">Hello Guest,</a>
+            <a class="navbar-brand">Hello <%=name%>,</a>
             <form class="form-inline">
                 <a href="#" class="btn btn-primary button lbutton">Leaderboard</a>
                 <!-- <a href="#" class="btn btn-success">Register</a> -->
@@ -32,7 +32,7 @@
     <section class="gradient">
         <div class="h3 q2">Question 1</div>
         <div class="h3 question" id="q1">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed magni nam beatae eos sit. Sapiente eos aliquid inventore quasi, possimus rem officia hic deleniti nihil quis dolor aspernatur, cupiditate commodi animi qui? Sunt, eos ratione, delectus ab consequatur suscipit nostrum quam earum accusantium, maxime possimus corporis beatae molestiae rem repudiandae tempora reiciendis dignissimos quasi voluptatum ea officiis error sequi obcaecati?
+          <!-- Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed magni nam beatae eos sit. Sapiente eos aliquid inventore quasi, possimus rem officia hic deleniti nihil quis dolor aspernatur, cupiditate commodi animi qui? Sunt, eos ratione, delectus ab consequatur suscipit nostrum quam earum accusantium, maxime possimus corporis beatae molestiae rem repudiandae tempora reiciendis dignissimos quasi voluptatum ea officiis error sequi obcaecati? -->
         </div>
         <!-- <div class="h7 question" id="q2">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur sapiente impedit earum, quod sit, est in provident suscipit architecto, dicta placeat tempore eveniet similique cumque repudiandae corporis vitae facilis perferendis commodi. Esse eum quos accusantium nihil natus, neque quam maxime at. Optio veritatis eos excepturi qui illo? Labore, nobis! Facilis repellendus voluptate quasi vero, quis quisquam eaque exercitationem nesciunt rem?
@@ -48,17 +48,17 @@
         <!-- </div> -->
         <img src="Assets/imgs/wave3.png" alt="" class="wave wave1">
     </section>
-    <section class="plain">
+    <section  class="plain">
       <div class="h3 q2 white">Question 2</div>
       <div class="h3 question white" id="q2">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed magni nam beatae eos sit. Sapiente eos aliquid inventore quasi, possimus rem officia hic deleniti nihil quis dolor aspernatur, cupiditate commodi animi qui? Sunt, eos ratione, delectus ab consequatur suscipit nostrum quam earum accusantium, maxime possimus corporis beatae molestiae rem repudiandae tempora reiciendis dignissimos quasi voluptatum ea officiis error sequi obcaecati?
+        <!-- Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed magni nam beatae eos sit. Sapiente eos aliquid inventore quasi, possimus rem officia hic deleniti nihil quis dolor aspernatur, cupiditate commodi animi qui? Sunt, eos ratione, delectus ab consequatur suscipit nostrum quam earum accusantium, maxime possimus corporis beatae molestiae rem repudiandae tempora reiciendis dignissimos quasi voluptatum ea officiis error sequi obcaecati? -->
       </div>
     </section>
-    <section class="gradient sec-3">
+    <section  class="gradient sec-3">
         <img src="Assets/imgs/wave5.png" alt="" class="wave wave2">
         <div class="h3 q2">Question 3</div>
         <div class="h3 question" id="q3">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed magni nam beatae eos sit. Sapiente eos aliquid inventore quasi, possimus rem officia hic deleniti nihil quis dolor aspernatur, cupiditate commodi animi qui? Sunt, eos ratione, delectus ab consequatur suscipit nostrum quam earum accusantium, maxime possimus corporis beatae molestiae rem repudiandae tempora reiciendis dignissimos quasi voluptatum ea officiis error sequi obcaecati?
+          <!-- Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed magni nam beatae eos sit. Sapiente eos aliquid inventore quasi, possimus rem officia hic deleniti nihil quis dolor aspernatur, cupiditate commodi animi qui? Sunt, eos ratione, delectus ab consequatur suscipit nostrum quam earum accusantium, maxime possimus corporis beatae molestiae rem repudiandae tempora reiciendis dignissimos quasi voluptatum ea officiis error sequi obcaecati? -->
         </div>
         <img src="Assets/imgs/wave4.png" alt="" class="wave wave1">
     </section>
@@ -66,7 +66,7 @@
 
       <div class="h3 q2 white">Question 4</div>
       <div class="h3 question white" id="q4">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed magni nam beatae eos sit. Sapiente eos aliquid inventore quasi, possimus rem officia hic deleniti nihil quis dolor aspernatur, cupiditate commodi animi qui? Sunt, eos ratione, delectus ab consequatur suscipit nostrum quam earum accusantium, maxime possimus corporis beatae molestiae rem repudiandae tempora reiciendis dignissimos quasi voluptatum ea officiis error sequi obcaecati?
+        <!-- Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed magni nam beatae eos sit. Sapiente eos aliquid inventore quasi, possimus rem officia hic deleniti nihil quis dolor aspernatur, cupiditate commodi animi qui? Sunt, eos ratione, delectus ab consequatur suscipit nostrum quam earum accusantium, maxime possimus corporis beatae molestiae rem repudiandae tempora reiciendis dignissimos quasi voluptatum ea officiis error sequi obcaecati? -->
       </div>
       <input type="number" class="answer" id="exampleInputNumber" aria-describedby="numberHelp" placeholder="Enter your answer string here(numerical only without spaces*)" name="answer" required>
     </section>
@@ -124,6 +124,36 @@
         crossorigin="anonymous"></script>
     <script src="JS/base.js"></script>
     <script type="text/javascript" src="JS/quiz.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const populate = ({ques1,ques2,ques3,ques4})=>{
+          Ques1 = document.querySelector('#q1')
+          Ques2 = document.querySelector('#q2')
+          Ques3 = document.querySelector('#q3')
+          Ques4 = document.querySelector('#q4')
+          let newQ1 = document.createElement('p');
+          newQ1.innerHTML = ques1;
+          Ques1.appendChild(newQ1);
+
+          let newQ2 = document.createElement('p');
+          newQ2.innerHTML = ques2;
+          Ques2.appendChild(newQ2);
+
+          let newQ3 = document.createElement('p');
+          newQ3.innerHTML = ques3;
+          Ques3.appendChild(newQ3);
+
+          let newQ4 = document.createElement('p');
+          newQ4.innerHTML = ques4;
+          Ques4.appendChild(newQ4);
+         
+
+      }
+      const socket = io();
+      socket.on('question',data=>{
+          populate(data);
+      })
+    </script>
 </body>
 
 </html>
