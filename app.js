@@ -13,6 +13,7 @@ const csrf = require('csurf')
 const mongoStore = require('connect-mongodb-session')(session)
 
 const csrfProtection = csrf({cookie:true});
+
 const app = express();
 
 //Models
@@ -68,11 +69,7 @@ app.get("/register",(req,res)=>{
     res.render("register",{csrfToken: req.csrfToken()})
 })
 
-app.get('/quiz', (req,res)=>{
-    res.render('quiz');
-})
-
-//Post requests
+//Post   requests
 
 app.post('/login', (req,res)=>{
    Player.findOne({email: req.body.email})

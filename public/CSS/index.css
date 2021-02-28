@@ -5,6 +5,7 @@ body{
     background-size: 100%;
     position: relative;*/
     /* overflow: hidden; */
+    overflow-x: hidden;
     font-family: 'Ubuntu', sans-serif !important;
 }
 .plain{
@@ -12,7 +13,7 @@ body{
 }
 .gradient{
     position: relative;
-    background: linear-gradient(0deg, #3eadcf, #abe9cd);
+    background: linear-gradient(0deg,  #00C6A7 , #1E4D92);
     height: 100vh;
 }
 .sec-3{
@@ -25,6 +26,7 @@ body{
 }
 .wave1{
     bottom: 0;
+    left: 0;
 }
 .wave2{
     /* top: -215px; */
@@ -83,7 +85,7 @@ footer {
     padding: 25px 0 22px 0;
     position: relative;
     text-align: center;
-    background: linear-gradient(0deg, #3eadcf, #abe9cd);
+    background: linear-gradient(0deg,  #00C6A7 , #1E4D92);
     background-blend-mode: lighten;
   }
 
