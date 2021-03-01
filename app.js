@@ -212,19 +212,43 @@ const io = socketio(server);
 const Question = require('./models/Question')(mongoose)
 io.on('connect',socket=>{
     console.log("Connection made");
-    numbers = [0,1,2,3]; //Currently hardcoded
-    Question.find({quesNo:{$in:numbers}})
-    .then((data)=>{
-        const myObj = {
-            ques1:data[0].ques,
-            ques2:data[1].ques,
-            ques3:data[2].ques,
-            ques4:data[3].ques,
-        }
-        io.emit('question',myObj);
+    numbers = [0,1,2,3]; //Initially display first four questions. Later change to question Numbers which are currently live in the quiz
+    renderQuestions = (questionNumbers)=>{
+        Question.find({quesNo:{$in:questionNumbers}})
+        .then((data)=>{
+            const myObj = {
+                ques1:data[0].ques,
+                ques2:data[1].ques,
+                ques3:data[2].ques,
+                ques4:data[3].ques,
+            }
+            io.emit('question',myObj);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+    }
+    renderQuestions(numbers);
+    //Listening for answers
+    socket.on('answer',data=>{
+        let answers = data.split(' ');
+        answers = answers.map(x=> x = parseInt(x))
+        Question.find({quesNo:{$in:numbers}})
+        .then((data)=>{
+            let flag = true;
+            for(let i=0;i<data.length;i++){
+                if(data[i].ans!=answers[i]){
+                    flag = false;
+                }
+            }
+            if(flag){
+                numbers = numbers.map(x=> x+=4)
+                //Increase the users points, prompt him saying correct answer and prompt others saying someone else submitted
+                renderQuestions(numbers);
+            }
+            else{
+                //Prompt this user for wrong answer
+            }
+        })
     })
-    .catch(err=>{
-        console.log(err);
-    })
-    // io.emit('question',)
 })

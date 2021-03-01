@@ -68,8 +68,9 @@
       <div class="h3 question white" id="q4">
         <!-- Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed magni nam beatae eos sit. Sapiente eos aliquid inventore quasi, possimus rem officia hic deleniti nihil quis dolor aspernatur, cupiditate commodi animi qui? Sunt, eos ratione, delectus ab consequatur suscipit nostrum quam earum accusantium, maxime possimus corporis beatae molestiae rem repudiandae tempora reiciendis dignissimos quasi voluptatum ea officiis error sequi obcaecati? -->
       </div>
-      <input type="number" class="answer" id="exampleInputNumber" aria-describedby="numberHelp" placeholder="Enter your answer string here(numerical only without spaces*)" name="answer" required>
+      <input type="text" class="answer" id="exampleInputNumber" aria-describedby="numberHelp" placeholder="Enter your answer string here(answers to be separated with spaces)" name="answer">
     </section>
+    <button id="submitAnswer" style="margin-left: 45%">Submit</button>
     <div class="section fp-auto-height">
         <footer>
           <div class="col-lg-12 f-logo">
@@ -127,31 +128,26 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const populate = ({ques1,ques2,ques3,ques4})=>{
-          Ques1 = document.querySelector('#q1')
-          Ques2 = document.querySelector('#q2')
-          Ques3 = document.querySelector('#q3')
-          Ques4 = document.querySelector('#q4')
-          let newQ1 = document.createElement('p');
-          newQ1.innerHTML = ques1;
-          Ques1.appendChild(newQ1);
-
-          let newQ2 = document.createElement('p');
-          newQ2.innerHTML = ques2;
-          Ques2.appendChild(newQ2);
-
-          let newQ3 = document.createElement('p');
-          newQ3.innerHTML = ques3;
-          Ques3.appendChild(newQ3);
-
-          let newQ4 = document.createElement('p');
-          newQ4.innerHTML = ques4;
-          Ques4.appendChild(newQ4);
-         
-
+          Ques1 = document.querySelector('#q1').firstChild
+          Ques2 = document.querySelector('#q2').firstChild
+          Ques3 = document.querySelector('#q3').firstChild
+          Ques4 = document.querySelector('#q4').firstChild
+          Ques1.nodeValue = ques1;
+          Ques2.nodeValue = ques2;
+          Ques3.nodeValue = ques3;
+          Ques4.nodeValue = ques4;
       }
+
+      const submitButton = document.querySelector('#submitAnswer')
       const socket = io();
       socket.on('question',data=>{
           populate(data);
+      })
+
+      submitButton.addEventListener('click',e=>{
+        e.preventDefault;
+        let data = document.querySelector('#exampleInputNumber').value;
+        socket.emit('answer',data); //Pass the users info also to give points to him
       })
     </script>
 </body>
