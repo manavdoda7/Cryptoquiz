@@ -7,6 +7,7 @@ body{
     /* overflow: hidden; */
     font-family: 'Ubuntu', sans-serif !important;
     color: #fff;
+    overflow-x: hidden;
 }
 .plain{
     height: 100vh;
@@ -77,6 +78,26 @@ section{
   align-items: center;
   position: relative;
 } */
+.answer-bar{
+
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-30%, -50%);
+  width: 100%;
+}
+
+#submitAnswer{
+  background: #1E4D92;
+  color: #fff;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+.arrow{
+  transform: translate(-8px, -1px);
+}
+
 .answer{
   background: #ddd;
   margin-left: 7%;
@@ -86,10 +107,7 @@ section{
   height: 4%;
   border: 0;
   border-bottom: 2px #777 solid;
-  position: absolute;
-  top: 80%;
-  left: 50%;
-  transform: translate(-60%, -50%);
+  display: inline;
   /* left: 22%;
   top: 40%; */
 }
